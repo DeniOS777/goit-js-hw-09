@@ -17,18 +17,50 @@ img {
   max-width: 100%;
 }
 
-button {
-  width: 100px;
-  height: 50px;
-  padding: 0;
-  font-size: 20px;
-  border-radius: 5px;
-  border-style: none;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
-    0px 2px 1px rgba(0, 0, 0, 0.2);
-  transition: background-color 200ms ease-in-out;
+.wrap {
+  display: flex;
+  align-items: center;
 }
 
-button:hover {
+button {
+  width: 100px;
+  height: 35px;
+  padding: 5px;
+  font-size: 20px;
+  border-radius: 5px;
+  border: 1px solid #969696;
   background-color: rgb(223, 223, 223);
+}
+
+input {
+  margin-right: 10px;
+  padding-left: 10px;
+  max-width: 250px;
+  height: 35px;
+  font-size: 20px;
+  border: 1px solid #969696;
+  border-radius: 4px;
+}
+
+.timer {
+  display: flex;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.field + .field {
+  margin-left: 20px;
+}
+
+.value {
+  font-size: 48px;
+}
+
+.label {
+  text-transform: uppercase;
+  font-size: 18px;
 }
