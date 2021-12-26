@@ -33,14 +33,16 @@ refs.buttonStart.addEventListener('click', onButtonStartTimerClick);
 refs.buttonStart.setAttribute('disabled', 'disabled');
 
 const INTERVAL_ID = 1000;
+let timerID = null;
 
 function onButtonStartTimerClick() {
-  setInterval(() => {
+  timerID = setInterval(() => {
     const deltaTime = selectedDate - Date.now();
     const formatComponents = convertMs(deltaTime);
     onShowInterface(formatComponents);
     console.log(formatComponents);
   }, INTERVAL_ID);
+
   refs.buttonStart.setAttribute('disabled', 'disabled');
   refs.input.setAttribute('disabled', 'disabled');
 }
