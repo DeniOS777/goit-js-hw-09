@@ -11,17 +11,17 @@ const options = {
   onClose(selectedDates) {
     selectedDate = selectedDates[0].getTime();
     if (selectedDate < Date.now()) {
-      refs.buttonStart.setAttribute('disabled', 'disabled');
       return alert('Please choose a date in the future');
     }
     refs.buttonStart.removeAttribute('disabled');
   },
 };
 
-const fp = flatpickr('#datetime-picker', options);
+flatpickr('#datetime-picker', options);
 
 const refs = {
   buttonStart: document.querySelector('[data-start]'),
+  input: document.querySelector('#datetime-picker'),
   days: document.querySelector('[data-days]'),
   hours: document.querySelector('[data-hours]'),
   minutes: document.querySelector('[data-minutes]'),
@@ -32,13 +32,17 @@ refs.buttonStart.addEventListener('click', onButtonStartTimerClick);
 
 refs.buttonStart.setAttribute('disabled', 'disabled');
 
+const INTERVAL_ID = 1000;
+
 function onButtonStartTimerClick() {
   setInterval(() => {
     const deltaTime = selectedDate - Date.now();
     const formatComponents = convertMs(deltaTime);
     onShowInterface(formatComponents);
     console.log(formatComponents);
-  }, 1000);
+  }, INTERVAL_ID);
+  refs.buttonStart.setAttribute('disabled', 'disabled');
+  refs.input.setAttribute('disabled', 'disabled');
 }
 
 function onShowInterface({ days, hours, minutes, seconds }) {
