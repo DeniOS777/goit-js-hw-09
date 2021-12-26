@@ -1,4 +1,5 @@
 import flatpickr from 'flatpickr';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import 'flatpickr/dist/flatpickr.min.css';
 
 let selectedDate = null;
@@ -11,8 +12,9 @@ const options = {
   onClose(selectedDates) {
     selectedDate = selectedDates[0].getTime();
     if (selectedDate < Date.now()) {
-      return alert('Please choose a date in the future');
+      return Notify.failure('Please choose a date in the future', { timeout: 1500 });
     }
+    Notify.success('Date is valid', { timeout: 1500 });
     refs.buttonStart.removeAttribute('disabled');
   },
 };
@@ -41,7 +43,7 @@ function onButtonStartTimerClick() {
       clearInterval(timerID);
       refs.input.removeAttribute('disabled');
 
-      return alert('УРААААА, СТАРТ РАСПРОДАЖИ');
+      return Notify.success('SALE IS STARTED!!!');
     }
     const deltaTime = selectedDate - Date.now();
     console.log(deltaTime);
