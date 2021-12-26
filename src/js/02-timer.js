@@ -37,10 +37,16 @@ let timerID = null;
 
 function onButtonStartTimerClick() {
   timerID = setInterval(() => {
+    if (selectedDate - Date.now() < 0) {
+      clearInterval(timerID);
+      refs.input.removeAttribute('disabled');
+
+      return alert('УРААААА, СТАРТ РАСПРОДАЖИ');
+    }
     const deltaTime = selectedDate - Date.now();
+    console.log(deltaTime);
     const formatComponents = convertMs(deltaTime);
     onShowInterface(formatComponents);
-    console.log(formatComponents);
   }, INTERVAL_ID);
 
   refs.buttonStart.setAttribute('disabled', 'disabled');
