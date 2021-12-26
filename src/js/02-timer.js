@@ -1,6 +1,7 @@
 import flatpickr from 'flatpickr';
-
 import 'flatpickr/dist/flatpickr.min.css';
+
+let selectedDate = null;
 
 const options = {
   enableTime: true,
@@ -8,20 +9,16 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
-    if (selectedDates[0].getTime() < Date.now()) {
+    selectedDate = selectedDates[0].getTime();
+    if (selectedDate < Date.now()) {
       refs.buttonStart.setAttribute('disabled', 'disabled');
       return alert('Please choose a date in the future');
     }
     refs.buttonStart.removeAttribute('disabled');
-    const deltaTime = selectedDates[0].getTime() - Date.now();
-    const formattingTime = convertMs(deltaTime);
-    console.log(formattingTime);
   },
 };
 
 const fp = flatpickr('#datetime-picker', options);
-console.log(fp.now);
 
 const refs = {
   buttonStart: document.querySelector('[data-start]'),
@@ -36,7 +33,19 @@ refs.buttonStart.addEventListener('click', onButtonStartTimerClick);
 refs.buttonStart.setAttribute('disabled', 'disabled');
 
 function onButtonStartTimerClick() {
-  console.log('Таймер до распродажи запущен');
+  setInterval(() => {
+    const deltaTime = selectedDate - Date.now();
+    const formatComponents = convertMs(deltaTime);
+    onShowInterface(formatComponents);
+    console.log(formatComponents);
+  }, 1000);
+}
+
+function onShowInterface({ days, hours, minutes, seconds }) {
+  refs.days.textContent = `${days}`;
+  refs.hours.textContent = `${hours}`;
+  refs.minutes.textContent = `${minutes}`;
+  refs.seconds.textContent = `${seconds}`;
 }
 
 function convertMs(ms) {
