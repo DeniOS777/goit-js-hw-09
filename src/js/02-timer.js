@@ -11,9 +11,12 @@ const options = {
     console.log(selectedDates[0]);
     if (selectedDates[0].getTime() < Date.now()) {
       refs.buttonStart.setAttribute('disabled', 'disabled');
-      return console.log('Дата меньше');
+      return alert('Please choose a date in the future');
     }
     refs.buttonStart.removeAttribute('disabled');
+    const deltaTime = selectedDates[0].getTime() - Date.now();
+    const formattingTime = convertMs(deltaTime);
+    console.log(formattingTime);
   },
 };
 
@@ -49,10 +52,6 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
 
 function addLeadingZero(value) {
   return value.toString().padStart(2, '0');
