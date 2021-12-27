@@ -1,6 +1,20 @@
 import flatpickr from 'flatpickr';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Report } from 'notiflix/build/notiflix-report-aio';
 import 'flatpickr/dist/flatpickr.min.css';
+
+const refs = {
+  buttonStart: document.querySelector('[data-start]'),
+  input: document.querySelector('#datetime-picker'),
+  days: document.querySelector('[data-days]'),
+  hours: document.querySelector('[data-hours]'),
+  minutes: document.querySelector('[data-minutes]'),
+  seconds: document.querySelector('[data-seconds]'),
+};
+
+refs.buttonStart.addEventListener('click', onButtonStartTimerClick);
+
+refs.buttonStart.setAttribute('disabled', 'disabled');
 
 let selectedDate = null;
 
@@ -21,19 +35,6 @@ const options = {
 
 flatpickr('#datetime-picker', options);
 
-const refs = {
-  buttonStart: document.querySelector('[data-start]'),
-  input: document.querySelector('#datetime-picker'),
-  days: document.querySelector('[data-days]'),
-  hours: document.querySelector('[data-hours]'),
-  minutes: document.querySelector('[data-minutes]'),
-  seconds: document.querySelector('[data-seconds]'),
-};
-
-refs.buttonStart.addEventListener('click', onButtonStartTimerClick);
-
-refs.buttonStart.setAttribute('disabled', 'disabled');
-
 const INTERVAL_ID = 1000;
 let timerID = null;
 
@@ -43,10 +44,9 @@ function onButtonStartTimerClick() {
       clearInterval(timerID);
       refs.input.removeAttribute('disabled');
 
-      return Notify.success('SALE IS STARTED!!!');
+      return Report.success('SALE', 'Sale started!!!', 'Okay');
     }
     const deltaTime = selectedDate - Date.now();
-    console.log(deltaTime);
     const formatComponents = convertMs(deltaTime);
     onShowInterface(formatComponents);
   }, INTERVAL_ID);
