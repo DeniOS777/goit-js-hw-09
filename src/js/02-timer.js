@@ -1,6 +1,6 @@
 import flatpickr from 'flatpickr';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { Report } from 'notiflix/build/notiflix-report-aio';
+// import { Report } from 'notiflix/build/notiflix-report-aio';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -46,7 +46,7 @@ class Timer {
       if (selectedDate - Date.now() < 0) {
         clearInterval(this.timerID);
         refs.input.removeAttribute('disabled');
-        return Report.success('SALE', 'Sale started!!!', 'Okay');
+        return;
       }
       const deltaTime = selectedDate - Date.now();
       const formatedDate = this.convertMs(deltaTime);
