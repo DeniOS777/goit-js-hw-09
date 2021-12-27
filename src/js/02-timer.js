@@ -1,6 +1,7 @@
 import flatpickr from 'flatpickr';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Report } from 'notiflix/build/notiflix-report-aio';
+
 import 'flatpickr/dist/flatpickr.min.css';
 
 const refs = {
@@ -11,8 +12,6 @@ const refs = {
   minutes: document.querySelector('[data-minutes]'),
   seconds: document.querySelector('[data-seconds]'),
 };
-
-refs.buttonStart.addEventListener('click', onButtonStartTimerClick);
 
 refs.buttonStart.setAttribute('disabled', 'disabled');
 
@@ -35,27 +34,37 @@ const options = {
 
 flatpickr('#datetime-picker', options);
 
-const INTERVAL_ID = 1000;
-let timerID = null;
+class Timer {
+  constructor({ onShow }) {
+    this.intervalId = 1000;
+    this.timerID = null;
+    this.onShow = onShow;
+  }
 
-function onButtonStartTimerClick() {
-  timerID = setInterval(() => {
-    if (selectedDate - Date.now() < 0) {
-      clearInterval(timerID);
-      refs.input.removeAttribute('disabled');
+  start() {
+    this.timerId = setInterval(() => {
+      if (selectedDate - Date.now() < 0) {
+        clearInterval(this.timerID);
+        refs.input.removeAttribute('disabled');
+        return Report.success('SALE', 'Sale started!!!', 'Okay');
+      }
+      const deltaTime = selectedDate - Date.now();
+      const formatComponents = convertMs(deltaTime);
+      this.onShow(formatComponents);
+    }, this.intervalId);
 
-      return Report.success('SALE', 'Sale started!!!', 'Okay');
-    }
-    const deltaTime = selectedDate - Date.now();
-    const formatComponents = convertMs(deltaTime);
-    onShowInterface(formatComponents);
-  }, INTERVAL_ID);
-
-  refs.buttonStart.setAttribute('disabled', 'disabled');
-  refs.input.setAttribute('disabled', 'disabled');
+    refs.buttonStart.setAttribute('disabled', 'disabled');
+    refs.input.setAttribute('disabled', 'disabled');
+  }
 }
 
-function onShowInterface({ days, hours, minutes, seconds }) {
+const timer = new Timer({
+  onShow: updateTimerInterface,
+});
+
+refs.buttonStart.addEventListener('click', timer.start.bind(timer));
+
+function updateTimerInterface({ days, hours, minutes, seconds }) {
   refs.days.textContent = `${days}`;
   refs.hours.textContent = `${hours}`;
   refs.minutes.textContent = `${minutes}`;
