@@ -1,6 +1,6 @@
 import flatpickr from 'flatpickr';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-// import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Report } from 'notiflix/build/notiflix-report-aio';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -24,10 +24,12 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     selectedDate = selectedDates[0].getTime();
+
     if (selectedDate < Date.now()) {
-      return Notify.failure('Please choose a date in the future', { timeout: 1500 });
+      return Notify.failure('Please choose a date in the future');
     }
-    Notify.success('Date is valid', { timeout: 1500 });
+
+    Notify.success('Date is valid, click to Start button');
     refs.buttonStart.removeAttribute('disabled');
   },
 };
@@ -36,23 +38,23 @@ flatpickr('#datetime-picker', options);
 
 class Timer {
   constructor({ onShow }) {
-    this.intervalId = 1000;
-    this.timerID = null;
+    this.delay = 1000;
+    this.intervalID = null;
     this.onShow = onShow;
   }
 
   start() {
-    this.timerId = setInterval(() => {
-      if (selectedDate - Date.now() < 0) {
-        clearInterval(this.timerID);
+    this.intervalID = setInterval(() => {
+      if ((selectedDate - Date.now()) / 1000 <= 0) {
+        clearInterval(this.intervalID);
         refs.input.removeAttribute('disabled');
-        return;
+        return Report.success('SALE STARTED!!!', 'LET`S GO', 'Okay');
       }
       const deltaTime = selectedDate - Date.now();
       const formatedDate = this.convertMs(deltaTime);
-      console.log(formatedDate);
+      console.log(deltaTime);
       this.onShow(formatedDate);
-    }, this.intervalId);
+    }, this.delay);
 
     refs.buttonStart.setAttribute('disabled', 'disabled');
     refs.input.setAttribute('disabled', 'disabled');
