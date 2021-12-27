@@ -52,7 +52,6 @@ class Timer {
       }
       const deltaTime = selectedDate - Date.now();
       const formatedDate = this.convertMs(deltaTime);
-      console.log(deltaTime);
       this.onShow(formatedDate);
     }, this.delay);
 
