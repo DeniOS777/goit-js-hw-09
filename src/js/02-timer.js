@@ -45,7 +45,7 @@ class Timer {
 
   start() {
     this.intervalID = setInterval(() => {
-      if ((selectedDate - Date.now()) / 1000 <= 0) {
+      if (selectedDate - Date.now() <= 0) {
         clearInterval(this.intervalID);
         refs.input.removeAttribute('disabled');
         return Report.success('SALE STARTED!!!', 'LET`S GO', 'Okay');
