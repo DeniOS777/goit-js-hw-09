@@ -2,18 +2,17 @@ const refs = {
   form: document.querySelector('.form'),
 };
 
-let delay = '';
-let step = '';
-let amount = '';
+let delay = null;
+let step = null;
+let amount = null;
 
 let intervalID = null;
-let counterValue = null;
 let position = null;
 
 function onFormEnterValue(e) {
-  delay = e.currentTarget.elements.delay.value;
-  step = e.currentTarget.elements.step.value;
-  amount = e.currentTarget.elements.amount.value;
+  delay = Number(e.currentTarget.elements.delay.value);
+  step = Number(e.currentTarget.elements.step.value);
+  amount = Number(e.currentTarget.elements.amount.value);
   console.log(`{delay: ${delay}, step: ${step}, amount: ${amount}}`);
 }
 
@@ -32,11 +31,12 @@ function createPromise(position, delay) {
 }
 
 function onRunPromise(e) {
+  let counterValue = null;
   e.preventDefault();
 
-  intervalID = setInterval(() => {
-    if (counterValue >= amount) {
-      clearInterval(intervalID);
+  intervalID = setTimeout(() => {
+    if (counterValue === Number(amount)) {
+      clearTimeout(intervalID);
       counterValue = null;
       position = null;
       return;
