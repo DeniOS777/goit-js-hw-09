@@ -22,7 +22,7 @@ img {
   align-items: center;
 }
 
-button {
+button[type='button'] {
   width: 100px;
   height: 35px;
   padding: 5px;
@@ -32,7 +32,7 @@ button {
   background-color: rgb(223, 223, 223);
 }
 
-input {
+input[type='text'] {
   margin-right: 10px;
   padding-left: 10px;
   max-width: 250px;
