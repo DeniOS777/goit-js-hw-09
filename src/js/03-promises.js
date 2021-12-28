@@ -7,7 +7,7 @@ const refs = {
 let intervalID = null;
 let position = 0;
 
-refs.form.addEventListener('submit', onRunPromise);
+refs.form.addEventListener('submit', onFormButtonSubmitRunPromise);
 
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
@@ -22,19 +22,19 @@ function createPromise(position, delay) {
   });
 }
 
-function onRunPromise(e) {
+function onFormButtonSubmitRunPromise(e) {
   e.preventDefault();
 
   let delay = Number(e.currentTarget.elements.delay.value);
   let step = Number(e.currentTarget.elements.step.value);
   let amount = Number(e.currentTarget.elements.amount.value);
-  let counter = null;
+  let counter = 0;
 
   intervalID = setInterval(() => {
     if (counter === Number(amount)) {
       clearInterval(intervalID);
-      counter = null;
-      position = null;
+      counter = 0;
+      position = 0;
       return;
     }
 
@@ -51,5 +51,5 @@ function onRunPromise(e) {
       .catch(({ position, delay }) => {
         Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
-  }, delay);
+  }, step);
 }
